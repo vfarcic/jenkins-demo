@@ -12,15 +12,18 @@ pipeline {
             - cat
             tty: true
             volumeMounts:
-            - name: regcred
-              mountPath: /secret
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker/
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /secret/regcred.json
         volumes:
-        - name: regcred
+        - name: kaniko-secret
           secret:
             secretName: regcred
+            items:
+            - key: .dockerconfigjson
+                path: config.json
         """.stripIndent()
     }
   }
