@@ -4,32 +4,32 @@ pipeline {
       yaml """\
         apiVersion: v1
         kind: Pod
-        metadata:
-          labels:
-            some-label: some-label-value
         spec:
           containers:
-          - name: maven
-            image: maven:alpine
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:debug
             command:
             - cat
             tty: true
-          - name: busybox
-            image: busybox
-            command:
-            - cat
-            tty: true
+            volumeMounts:
+            - name: regcred
+                mountPath: /secret
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+                value: /secret/regcred.json
+        volumes:
+            - name: regcred
+            secret:
+                secretName: regcred
         """.stripIndent()
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Build') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
-        container('busybox') {
-          sh '/bin/busybox'
+        container('kaniko') {
+          checkout scm
+          sh '/kaniko/executor -c `pwd` --cache=true --destination=gcr.io/myprojectid/myimage'
         }
       }
     }
