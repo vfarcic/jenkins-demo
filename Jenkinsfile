@@ -18,9 +18,9 @@ pipeline {
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /secret/regcred.json
         volumes:
-            - name: regcred
-            secret:
-              secretName: regcred
+        - name: regcred
+          secret:
+            secretName: regcred
         """.stripIndent()
     }
   }
