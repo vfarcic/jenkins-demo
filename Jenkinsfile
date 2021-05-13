@@ -13,14 +13,14 @@ pipeline {
             tty: true
             volumeMounts:
             - name: regcred
-                mountPath: /secret
+              mountPath: /secret
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
-                value: /secret/regcred.json
+              value: /secret/regcred.json
         volumes:
             - name: regcred
             secret:
-                secretName: regcred
+              secretName: regcred
         """.stripIndent()
     }
   }
