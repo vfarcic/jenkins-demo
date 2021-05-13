@@ -14,9 +14,6 @@ pipeline {
             volumeMounts:
             - name: kaniko-secret
               mountPath: /kaniko/.docker/
-            env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /secret/regcred.json
         volumes:
         - name: kaniko-secret
           secret:
