@@ -7,10 +7,10 @@ kind: Pod
 spec:
   containers:
   - name: kaniko
-  image: gcr.io/kaniko-project/executor:debug
-  command:
-  - cat
-  tty: true
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - cat
+    tty: true
   volumeMounts:
   - name: kaniko-secret
     mountPath: /kaniko/.docker/
