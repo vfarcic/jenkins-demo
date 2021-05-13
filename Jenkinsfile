@@ -1,11 +1,7 @@
-pipeline {
-    agent any
-    stages {
-        stage("build") {
-            steps {
-                checkout scm
-                echo "xxx"
-            }
+podTemplate {
+    node(POD_LABEL) {
+        stage('Run shell') {
+            sh 'echo hello world'
         }
     }
 }
