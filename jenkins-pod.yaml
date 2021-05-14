@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccount: jenkins
   containers:
   - name: shell
     image: alpine
