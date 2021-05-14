@@ -1,0 +1,16 @@
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: github-actions-demo
+  labels:
+    app: github-actions-demo
+spec:
+  minReplicas: 2
+  maxReplicas: 6
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: github-actions-demo
+  targetCPUUtilizationPercentage: 80
