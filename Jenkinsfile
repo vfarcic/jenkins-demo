@@ -23,7 +23,7 @@ pipeline {
         container("kustomize") {
           sh """
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
-            kustomize build argo-cd/overlays/production | kubectl apply --filename -
+            kustomize build . | kubectl apply --filename -
           """
           sh "echo Running tests..."
         }
@@ -42,12 +42,11 @@ pipeline {
       }
     }
   }
-//   post {
-//     when { not { branch "master" } }
-//     always {
-//       container("shipa") {
-//         sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
-//       }
-//     }
-//   }
+  post {
+    always {
+      container("shipa") {
+        sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+      }
+    }
+  }
 }
