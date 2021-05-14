@@ -5,11 +5,14 @@ pipeline {
       yamlFile "jenkins-pod.yaml"
     }
   }
+  environment {
+    PROJECT = "jenkins-demo"
+  }
   stages {
     stage("Build") {
       steps {
         container("kaniko") {
-          sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination vfarcic/jenkins-demo:${BUILD_NUMBER}"
+          sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination vfarcic/${PROJECT}:${BUILD_NUMBER}"
         }
       }
     }
@@ -18,7 +21,9 @@ pipeline {
         container("shipa") {
           sh "whoami"
           sh "ls -l /root/.shipa"
-          sh "shipa framework list"
+          if (env.BRANCH_NAME != "master") {
+              sh "shipa app create $PROJECT-pr-$BRANCH_NAME"
+          }
         }
       }
     }
