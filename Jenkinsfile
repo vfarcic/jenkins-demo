@@ -30,7 +30,6 @@ pipeline {
       when { branch "master" }
       steps {
         container("shipa") {
-          sh "shipa app create $PROJECT"
           sh "shipa app deploy --app $PROJECT --image ${REGISTRY_USER}/${PROJECT}:${BUILD_NUMBER}"
         }
       }
