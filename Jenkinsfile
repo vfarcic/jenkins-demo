@@ -17,14 +17,13 @@ pipeline {
       }
     }
     stage("Deploy PR") {
-      when {
-          expression { env.BRANCH_NAME != "master" }
-      }
+    //   when {
+    //       expression { env.BRANCH_NAME != "master" }
+    //   }
       steps {
         container("shipa") {
-          sh "whoami"
-          sh "ls -l /root/.shipa"
-          sh "shipa app create $PROJECT-pr-$BRANCH_NAME"
+          sh "echo $BRANCH_NAME"
+        //   sh "shipa app create $PROJECT-pr-$BRANCH_NAME"
         }
       }
     }
