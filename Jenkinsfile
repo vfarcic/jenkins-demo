@@ -22,18 +22,19 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
+            export BRANCH=$($BRANCH_NAME | tr "[:upper:]" "[:lower:]")
             set +e
-            kubectl create namespace $PROJECT-$BRANCH_NAME
+            kubectl create namespace $PROJECT-$BRANCH
             set -e
             cd kustomize/overlays/preview
-            kustomize edit set namespace $PROJECT-$BRANCH_NAME
-            kustomize edit set image $REGISTRY_USER/$PROJECT=$REGISTRY_USER/$PROJECT:$BRANCH_NAME-$BUILD_NUMBER
-            cat ingress.yaml | sed -e "s@host: @host: ${BRANCH_NAME}@g" | tee ingress.yaml
+            kustomize edit set namespace $PROJECT-$BRANCH
+            kustomize edit set image $REGISTRY_USER/$PROJECT=$REGISTRY_USER/$PROJECT:$BRANCH-$BUILD_NUMBER
+            cat ingress.yaml | sed -e "s@host: @host: ${BRANCH}@g" | tee ingress.yaml
             kustomize build . | kubectl apply --filename -
-            kubectl --namespace $PROJECT-$BRANCH_NAME rollout status deployment jenkins-demo
+            kubectl --namespace $PROJECT-$BRANCH rollout status deployment jenkins-demo
+            curl http://$BRANCH$PROJECT.3.124.47.165.nip.io
+            kubectl delete namespace $PROJECT-$BRANCH
           """
-          sh "curl http://$BRANCH_NAME$PROJECT.3.124.47.165.nip.io"
-          sh "kubectl delete namespace $PROJECT-$BRANCH_NAME"
         }
       }
     }
