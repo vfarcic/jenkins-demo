@@ -22,6 +22,7 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
+            kubectl get nodes
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             kustomize build . | kubectl apply --filename -
           """
