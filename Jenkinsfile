@@ -38,7 +38,9 @@ pipeline {
   }
   post {
     always {
-      sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+      container("shipa") {
+        sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+      }
     }
   }
 }
