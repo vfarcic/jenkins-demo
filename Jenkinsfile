@@ -29,7 +29,7 @@ pipeline {
             cd kustomize/overlays/preview
             kustomize edit set namespace $PROJECT-$BRANCH
             kustomize edit set image $REGISTRY_USER/$PROJECT=$REGISTRY_USER/$PROJECT:$BRANCH-$BUILD_NUMBER
-            cat ingress.yaml | sed -e "s@host: @host: ${BRANCH}@g" | tee ingress.yaml
+            cat ingress.yaml | sed -e "s@host: @host: $BRANCH@g" | tee ingress.yaml
             kustomize build . | kubectl apply --filename -
             kubectl --namespace $PROJECT-$BRANCH rollout status deployment jenkins-demo
             curl http://$BRANCH$PROJECT.3.124.47.165.nip.io
