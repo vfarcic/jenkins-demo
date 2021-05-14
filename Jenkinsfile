@@ -13,7 +13,6 @@ pipeline {
     stage("Build") {
       steps {
         container("kaniko") {
-          sh "env"
           sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
         }
       }
@@ -23,10 +22,11 @@ pipeline {
       steps {
         container("shipa") {
           sh """
-            shipa app create $PROJECT-pr-$BRANCH_NAME
-            shipa app deploy --app $PROJECT-pr-$BRANCH_NAME --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
+            shipa app create $PROJECT-$BRANCH_NAME
+            sleep 5
+            shipa app deploy --app $PROJECT-$BRANCH_NAME --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             echo Running tests...
-            shipa app remove --app $PROJECT-pr-$BRANCH_NAME
+            shipa app remove --app $PROJECT-$BRANCH_NAME
           """
         }
       }
