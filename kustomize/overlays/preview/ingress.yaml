@@ -18,4 +18,4 @@ spec:
            name: jenkins-demo
            port:
              number: 80
-    host: jenkins-demo.3.124.47.165.nip.io
+    host: xxxjenkins-demo.3.124.47.165.nip.io
