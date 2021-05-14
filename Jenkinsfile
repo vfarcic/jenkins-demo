@@ -11,16 +11,16 @@ spec:
     command:
     - cat
     tty: true
-  volumeMounts:
+    volumeMounts:
+    - name: kaniko-secret
+      mountPath: /kaniko/.docker/
+  volumes:
   - name: kaniko-secret
-    mountPath: /kaniko/.docker/
-volumes:
-- name: kaniko-secret
-  secret:
-    secretName: regcred
-    items:
-    - key: .dockerconfigjson
-      path: config.json
+    secret:
+      secretName: regcred
+      items:
+      - key: .dockerconfigjson
+        path: config.json
 """
     }
   }
