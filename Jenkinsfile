@@ -29,8 +29,6 @@ spec:
       steps {
         container('kaniko') {
           checkout scm
-          sh "ls -l /kaniko/.docker"
-          sh "cat /kaniko/.docker/.dockerconfigjson"
           sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:0.0.1"
         }
       }
