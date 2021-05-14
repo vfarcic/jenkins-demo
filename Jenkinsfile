@@ -21,13 +21,11 @@ pipeline {
       when { not { branch "master" } }
       steps {
         container("shipa") {
-          sh """
-            shipa app create $PROJECT-$BRANCH_NAME
-            sleep 5
-            shipa app deploy --app $PROJECT-$BRANCH_NAME --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
-            echo Running tests...
-            shipa app remove --app $PROJECT-$BRANCH_NAME
-          """
+          sh "shipa app create $PROJECT-$BRANCH_NAME"
+          sh "sleep 1"
+          sh "shipa app deploy --app $PROJECT-$BRANCH_NAME --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
+          sh "echo Running tests..."
+          sh "shipa app remove --app $PROJECT-$BRANCH_NAME"
         }
       }
     }
