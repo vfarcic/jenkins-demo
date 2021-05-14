@@ -28,7 +28,7 @@ pipeline {
             cd kustomize/overlays/preview
             kustomize edit set namespace $PROJECT-${env.BRANCH_NAME.toLowerCase()}
             kustomize edit set image $REGISTRY_USER/$PROJECT=$REGISTRY_USER/$PROJECT:${env.BRANCH_NAME.toLowerCase()}-$BUILD_NUMBER
-            cat ingress.yaml | sed -e "s@host: @host: ${BRANCH_NAME}@g" | tee ingress.yaml
+            cat ingress.yaml | sed -e "s@host: @host: ${env.BRANCH_NAME.toLowerCase()}@g" | tee ingress.yaml
             kustomize build . | kubectl apply --filename -
             kubectl --namespace $PROJECT-${env.BRANCH_NAME.toLowerCase()} rollout status deployment jenkins-demo
           """
