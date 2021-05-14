@@ -33,3 +33,6 @@ spec:
   - name: shipa-token
     secret:
       secretName: shipa-token
+      items:
+      - key: token
+        path: token
