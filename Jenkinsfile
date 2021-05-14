@@ -29,7 +29,7 @@ pipeline {
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             cat ingress.yaml
             echo 111
-            cat ingress.yaml | sed -e "s@host: @host: $BRANCH_NAME@g" | tee ingress.yaml
+            cat ingress.yaml | sed -e "s@host: @host: $BRANCH_NAME@g" >ingress.yaml
             echo 222
             cat ingress.yaml
             echo 333
