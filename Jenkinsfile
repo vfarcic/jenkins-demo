@@ -32,8 +32,8 @@ pipeline {
             kustomize build . | kubectl apply --filename -
             kubectl --namespace ${PROJECT}-${BRANCH_NAME} rollout status deployment jenkins-demo
           """
-        //   sh "curl http://${BRANCH_NAME}${PROJECT}.3.124.47.165.nip.io"
-        //   TODO: Delete the namespace
+          sh "curl http://${BRANCH_NAME}${PROJECT}.3.124.47.165.nip.io"
+          sh "kubectl delete namespace ${PROJECT-$BRANCH_NAME}"
         }
       }
     }
@@ -50,11 +50,11 @@ pipeline {
       }
     }
   }
-  post {
-    failure {
-      container("shipa") {
-        // sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
-      }
-    }
-  }
+//   post {
+//     failure {
+//       container("shipa") {
+//         sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+//       }
+//     }
+//   }
 }
