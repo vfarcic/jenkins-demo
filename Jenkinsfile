@@ -53,7 +53,7 @@ pipeline {
   post {
     failure {
       container("shipa") {
-        sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+        // sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
       }
     }
   }
