@@ -30,6 +30,10 @@ pipeline {
       when { branch "master" }
       steps {
         container("shipa") {
+          sh "ls -l /root/.shipa/"
+          sh "ls -l /root/.shipa/certificates"
+          sh "ls -l /root/.shipa/certificates/jenkins"
+          sh "ls -l /root/.shipa/certificates/jenkins/ca.crt"
           sh "shipa app create $PROJECT"
           sh "shipa app deploy --app $PROJECT --image ${REGISTRY_USER}/${PROJECT}:${BUILD_NUMBER}"
         }
