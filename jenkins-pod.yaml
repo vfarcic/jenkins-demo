@@ -20,6 +20,9 @@ spec:
     command:
     - cat
     tty: true
+    volumeMounts:
+    - name: shipa-token
+      mountPath: /root/.shipa
   volumes:
   - name: kaniko-secret
     secret:
@@ -27,3 +30,6 @@ spec:
       items:
       - key: .dockerconfigjson
         path: config.json
+  - name: shipa-token
+    secret:
+      secretName: shipa-token

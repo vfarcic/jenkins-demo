@@ -16,7 +16,10 @@ pipeline {
     stage("Deploy") {
       steps {
         container("shipa") {
-          sh "shipa version"
+          sh "whoami"
+          sh "ls -l /root/.shipa"
+          sh "shipa target add shipa-cloud target.shipa.cloud --set-current"
+          sh "shipa login"
         }
       }
     }
