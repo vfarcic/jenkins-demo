@@ -18,9 +18,7 @@ pipeline {
       }
     }
     stage("Deploy PR") {
-      when {
-        expression { env.BRANCH_NAME != "master" }
-      }
+      when { changeRequest target: 'master' }
       steps {
         container("shipa") {
           sh "shipa app create $PROJECT-pr-$BRANCH_NAME"
@@ -29,14 +27,18 @@ pipeline {
       }
     }
     stage("Deploy Prod") {
-      when {
-        expression { env.BRANCH_NAME != "master" }
-      }
+      when { branch "master" }
       steps {
         container("shipa") {
           sh "shipa app create $PROJECT"
           sh "shipa app deploy --app $PROJECT --image ${REGISTRY_USER}/${PROJECT}:${BUILD_NUMBER}"
         }
+      }
+    }
+    stage("Test") {
+      when { changeRequest target: 'master' }
+      steps {
+        echo "Running tests..."
       }
     }
   }
