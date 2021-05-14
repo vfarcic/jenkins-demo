@@ -22,9 +22,10 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
+            set +e
+            kubectl create namespace ${PROJECT}-$BRANCH_NAME
             set -e
             cd kustomize/overlays/preview
-            set +e
             kustomize edit set namespace ${PROJECT}-$BRANCH_NAME
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             cat ingress.yaml
