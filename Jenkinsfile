@@ -29,6 +29,7 @@ volumes:
       steps {
         container('kaniko') {
           checkout scm
+          cat /kaniko/.docker/
           sh '/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:0.0.1'
         }
       }
