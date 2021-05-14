@@ -42,12 +42,12 @@ pipeline {
       }
     }
   }
-  post {
-    when { not { branch "master" } }
-    always {
-      container("shipa") {
-        sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
-      }
-    }
-  }
+//   post {
+//     when { not { branch "master" } }
+//     always {
+//       container("shipa") {
+//         sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+//       }
+//     }
+//   }
 }
