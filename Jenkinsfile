@@ -6,11 +6,17 @@ pipeline {
     }
   }
   stages {
-    stage('Build') {
+    stage("Build") {
       steps {
-        container('kaniko') {
-          checkout scm
+        container("kaniko") {
           sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination vfarcic/jenkins-demo:${BUILD_NUMBER}"
+        }
+      }
+    }
+    stage("Deploy") {
+      steps {
+        container("shipa") {
+          sh "shipa version"
         }
       }
     }

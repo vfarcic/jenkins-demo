@@ -15,6 +15,11 @@ spec:
     volumeMounts:
     - name: kaniko-secret
       mountPath: /kaniko/.docker/
+  - name: shipa
+    image: shipasoftware/cli:v1.3.1-cloud
+    command:
+    - cat
+    tty: true
   volumes:
   - name: kaniko-secret
     secret:
