@@ -18,7 +18,7 @@ pipeline {
       }
     }
     stage("Test") {
-      when { changeRequest()) }
+      when { changeRequest() }
       steps {
         container("shipa") {
           sh """
