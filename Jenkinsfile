@@ -29,47 +29,9 @@ volumes:
       steps {
         container('kaniko') {
           checkout scm
-          sh '/kaniko/executor -c `pwd` --cache=true --destination=gcr.io/myprojectid/myimage'
+          sh '/kaniko/executor -c `pwd` --cache=true --destination=vfarcic/jenkins-demo'
         }
       }
     }
   }
 }
-
-// pipeline {
-//   agent {
-//     kubernetes {
-//       yaml """\
-//         apiVersion: v1
-//         kind: Pod
-//         metadata:
-//           labels:
-//             some-label: some-label-value
-//         spec:
-//           containers:
-//           - name: maven
-//             image: maven:alpine
-//             command:
-//             - cat
-//             tty: true
-//           - name: busybox
-//             image: busybox
-//             command:
-//             - cat
-//             tty: true
-//         """.stripIndent()
-//     }
-//   }
-//   stages {
-//     stage('Run maven') {
-//       steps {
-//         container('maven') {
-//           sh 'mvn -version'
-//         }
-//         container('busybox') {
-//           sh '/bin/busybox'
-//         }
-//       }
-//     }
-//   }
-// }
