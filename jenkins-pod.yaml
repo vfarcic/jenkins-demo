@@ -24,7 +24,7 @@ spec:
     - name: shipa-root
       mountPath: /root/.shipa
     - name: shipa-certs
-      mountPath: /root/.shipa/certificates/shipa
+      mountPath: /root/.shipa/certificates/jenkins
     - name: shipa-tokend
       mountPath: /root/.shipa/token.d
   volumes:
