@@ -36,10 +36,12 @@ pipeline {
       }
     }
     post {
-      when { not { branch "master" } }
-      steps {
-        container("shipa") {
-          sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+      always {
+        when { not { branch "master" } }
+        steps {
+          container("shipa") {
+            sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
+          }
         }
       }
     }
