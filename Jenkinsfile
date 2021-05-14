@@ -19,7 +19,7 @@ pipeline {
       }
     }
     stage("Test") {
-      when { changeRequest() }
+      when { not { branch "master" } }
       steps {
         container("shipa") {
           sh """
