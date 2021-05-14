@@ -22,7 +22,6 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
-            kubectl get nodes
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             kustomize build . | kubectl apply --filename -
           """
@@ -35,6 +34,7 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
+            kubectl get nodes
             cd kustomize/overlays/production
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             kustomize build argo-cd/overlays/production | kubectl apply --filename -
