@@ -29,7 +29,7 @@ volumes:
       steps {
         container('kaniko') {
           checkout scm
-          sh '/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo'
+          sh '/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:0.0.1'
         }
       }
     }
