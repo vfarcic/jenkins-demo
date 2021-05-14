@@ -22,10 +22,13 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
-            kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
-            kustomize build . | kubectl apply --filename -
+            # TODO: Create a Namespace
+            # kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
+            # kustomize build . | kubectl apply --filename -
+            # TODO: Rollout
           """
           sh "echo Running tests..."
+        //   TODO: Delete the namespace
         }
       }
     }
@@ -34,7 +37,6 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
-            kubectl get nodes
             cd kustomize/overlays/production
             kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
             kustomize build . | kubectl apply --filename -
@@ -44,7 +46,7 @@ pipeline {
     }
   }
   post {
-    always {
+    failure {
       container("shipa") {
         sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
       }
