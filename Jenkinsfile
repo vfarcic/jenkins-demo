@@ -22,7 +22,7 @@ pipeline {
       steps {
         container("kustomize") {
           sh """
-            export BRANCH=$($BRANCH_NAME | tr "[:upper:]" "[:lower:]")
+            export BRANCH=$($BRANCH_NAME | tr '[:upper:]' '[:lower:]')
             set +e
             kubectl create namespace $PROJECT-$BRANCH
             set -e
