@@ -29,7 +29,7 @@ spec:
       steps {
         container('kaniko') {
           checkout scm
-          sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:0.0.1"
+          sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination vfarcic/jenkins-demo:0.0.1"
         }
       }
     }
