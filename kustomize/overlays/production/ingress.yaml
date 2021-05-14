@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: github-actions-demo
+  name: jenkins-demo
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -15,7 +15,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-           name: github-actions-demo
+           name: jenkins-demo
            port:
              number: 80
-    host: devops-toolkit.20.72.171.187.xip.io
+    host: jenkins-demo.acme.com

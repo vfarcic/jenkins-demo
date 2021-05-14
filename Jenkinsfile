@@ -20,9 +20,11 @@ pipeline {
     stage("Test") {
       when { not { branch "master" } }
       steps {
-        container("shipa") {
-          sh "shipa app create $PROJECT-$BRANCH_NAME-${BUILD_NUMBER}"
-          sh "shipa app deploy --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
+        container("kustomize") {
+          sh """
+            kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
+            kustomize build argo-cd/overlays/production | kubectl apply --filename -
+          """
           sh "echo Running tests..."
         }
       }
@@ -30,13 +32,18 @@ pipeline {
     stage("Deploy") {
       when { branch "master" }
       steps {
-        container("shipa") {
-          sh "shipa app deploy --app $PROJECT --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
+        container("kustomize") {
+          sh """
+            cd kustomize/overlays/production
+            kustomize edit set image ${REGISTRY_USER}/${PROJECT}=${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}
+            kustomize build argo-cd/overlays/production | kubectl apply --filename -
+          """
         }
       }
     }
   }
   post {
+    when { not { branch "master" } }
     always {
       container("shipa") {
         sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"

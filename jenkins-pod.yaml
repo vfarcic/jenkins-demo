@@ -15,18 +15,11 @@ spec:
     volumeMounts:
     - name: kaniko-secret
       mountPath: /kaniko/.docker/
-  - name: shipa
-    image: shipasoftware/cli:v1.3.1-cloud
+  - name: kustomize
+    image: nekottyo/kustomize-kubeval
     command:
     - cat
     tty: true
-    volumeMounts:
-    - name: shipa-root
-      mountPath: /root/.shipa
-    - name: shipa-certs
-      mountPath: /root/.shipa/certificates/jenkins
-    - name: shipa-tokend
-      mountPath: /root/.shipa/token.d
   volumes:
   - name: kaniko-secret
     secret:
@@ -34,12 +27,3 @@ spec:
       items:
       - key: .dockerconfigjson
         path: config.json
-  - name: shipa-root
-    secret:
-      secretName: shipa-root
-  - name: shipa-certs
-    secret:
-      secretName: shipa-certs
-  - name: shipa-tokend
-    secret:
-      secretName: shipa-tokend
