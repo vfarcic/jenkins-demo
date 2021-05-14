@@ -21,14 +21,9 @@ pipeline {
       when { not { branch "master" } }
       steps {
         container("shipa") {
-          try {
-            sh "shipa app create $PROJECT-$BRANCH_NAME-${BUILD_NUMBER}"
-            sh "shipa app deploy --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
-            sh "echo Running tests..."
-          }
-          finally {
-            sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
-          }
+          sh "shipa app create $PROJECT-$BRANCH_NAME-${BUILD_NUMBER}"
+          sh "shipa app deploy --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
+          sh "echo Running tests..."
         }
       }
     }
@@ -37,6 +32,14 @@ pipeline {
       steps {
         container("shipa") {
           sh "shipa app deploy --app $PROJECT --image ${REGISTRY_USER}/${PROJECT}:$BRANCH_NAME-${BUILD_NUMBER}"
+        }
+      }
+    }
+    post {
+      when { not { branch "master" } }
+      steps {
+        container("shipa") {
+          sh "shipa app remove --app $PROJECT-$BRANCH_NAME-${BUILD_NUMBER} --assume-yes"
         }
       }
     }
