@@ -10,7 +10,6 @@ pipeline {
       steps {
         container('kaniko') {
           checkout scm
-          env
           sh "/kaniko/executor --context `pwd` --destination vfarcic/jenkins-demo:latest --destination vfarcic/jenkins-demo:${BUILD_NUMBER}"
         }
       }
